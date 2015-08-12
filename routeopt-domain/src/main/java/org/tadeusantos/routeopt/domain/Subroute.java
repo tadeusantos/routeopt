@@ -2,6 +2,7 @@ package org.tadeusantos.routeopt.domain;
 
 import javax.persistence.Id;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -16,28 +17,33 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Subroute {
 	@Id
 	private String id;
-	protected String name;
-	private Point from;
-	private Point to;
+	private String name;
+	private String map;
+	private String from;
+	private String to;
 	private double distance;
 
 	public Subroute() {
 
 	}
 
-	public Subroute(Point from, Point to, double distance) {
-		if (from == null || to == null) {
+	public Subroute(String map, String from, String to, double distance) {
+		if (StringUtils.isEmpty(map)) {
+			throw new IllegalArgumentException("exceptions.subroute.required.map");
+		}
+		if (StringUtils.isEmpty(from) || StringUtils.isEmpty(to)) {
 			throw new IllegalArgumentException("exceptions.subroute.required.points");
 		}
 		if (distance < 0) {
 			throw new IllegalArgumentException("exceptions.subroute.positive.distance");
 		}
 
+		this.map = map;
 		this.from = from;
 		this.to = to;
 		this.distance = distance;
 
-		this.name = String.format("%s -> %s", from.getName(), to.getName());
+		this.name = String.format("%s -> %s", from, to);
 	}
 
 	public String getId() {
@@ -56,19 +62,19 @@ public class Subroute {
 		this.name = name;
 	}
 
-	public Point getFrom() {
+	public String getFrom() {
 		return from;
 	}
 
-	public void setFrom(Point from) {
+	public void setFrom(String from) {
 		this.from = from;
 	}
 
-	public Point getTo() {
+	public String getTo() {
 		return to;
 	}
 
-	public void setTo(Point to) {
+	public void setTo(String to) {
 		this.to = to;
 	}
 
@@ -78,5 +84,13 @@ public class Subroute {
 
 	public void setDistance(double distance) {
 		this.distance = distance;
+	}
+
+	public String getMap() {
+		return map;
+	}
+
+	public void setMap(String map) {
+		this.map = map;
 	}
 }

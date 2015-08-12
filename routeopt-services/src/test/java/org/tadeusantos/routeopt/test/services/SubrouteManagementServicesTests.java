@@ -10,9 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.tadeusantos.routeopt.domain.Point;
 import org.tadeusantos.routeopt.domain.Subroute;
-import org.tadeusantos.routeopt.repositories.PointRepository;
 import org.tadeusantos.routeopt.repositories.SubrouteRepository;
 import org.tadeusantos.routeopt.repositories.config.RepositoriesConfiguration;
 import org.tadeusantos.routeopt.services.config.ServicesConfiguration;
@@ -31,61 +29,56 @@ public class SubrouteManagementServicesTests {
 	private ISubrouteManagementServices services;
 	@Autowired
 	private SubrouteRepository repository;
-	@Autowired
-	private PointRepository pointRepository;
-	
-	private Point to;
-	private Point from;
+
+	private String to;
+	private String from;
 	
 	@Before
     public void reset() {
 		repository.deleteAll();
-		pointRepository.deleteAll();
 		
-		from = new Point("pointFrom");
-		pointRepository.save(from);
-		to = new Point("pointTo");
-		pointRepository.save(to);
+		from = "pointFrom";
+		to = "pointTo";
     }
     
 	@Test
 	public void testNew() throws InvalidPointNameException, AmbiguousCritereaException, 
 									DuplicatedSubrouteException {
-		Subroute theNewSubroute = services.create(from.getName(), to.getName(), 13.4);
+		Subroute theNewSubroute = services.create("map", from, to, 13.4);
 
 		assertThat("the subroute should not be null", theNewSubroute, notNullValue());
-		assertThat(String.format("the from point name should be %s", from.getName()), 
-					theNewSubroute.getFrom().getName(), equalTo(from.getName()));
-		assertThat(String.format("the to point name should be %s", to.getName()), 
-					theNewSubroute.getTo().getName(), equalTo(to.getName()));
+		assertThat(String.format("the from point name should be %s", from), 
+					theNewSubroute.getFrom(), equalTo(from));
+		assertThat(String.format("the to point name should be %s", to), 
+					theNewSubroute.getTo(), equalTo(to));
 	}
     
 	@Test(expected=DuplicatedSubrouteException.class)
 	public void testNewDuplicated() throws AmbiguousCritereaException, DuplicatedSubrouteException, InvalidPointNameException {
-		services.create(from.getName(), to.getName(), 1000d);
-		services.create(to.getName(), from.getName(), 1000d);
+		services.create("map", from, to, 1000d);
+		services.create("map", to, from, 1000d);
 	}
 
 	@Test(expected=InvalidPointNameException.class)
 	public void testNewNullFromName() throws AmbiguousCritereaException, DuplicatedSubrouteException, InvalidPointNameException {
-		services.create(null, to.getName(), 10.1);
+		services.create("map", null, to, 10.1);
 	}
 	
 	@Test(expected=InvalidPointNameException.class)
 	public void testNewEmptyToName() throws AmbiguousCritereaException, DuplicatedSubrouteException, InvalidPointNameException {
-		services.create(from.getName(), null, 2.12);
+		services.create("map", from, null, 2.12);
 	}
 	
 	@Test()
 	public void testDelete() throws AmbiguousCritereaException, DuplicatedSubrouteException, InvalidPointNameException, SubrouteNotFoundException {
-		int previousTotal = services.listAll().size();
+		int previousTotal = services.listAll(null).size();
 
-		Subroute theNewSubroute = services.create(from.getName(), to.getName(), 13.4);
+		Subroute theNewSubroute = services.create("map", from, to, 13.4);
 		assertThat("the subroute should not be null", theNewSubroute, notNullValue());
 		
 		services.delete(theNewSubroute.getId());
 		
-		assertThat("the subroute should be gone", previousTotal, equalTo(services.listAll().size()));
+		assertThat("the subroute should be gone", previousTotal, equalTo(services.listAll(null).size()));
 	}
 	
 	@Test(expected=SubrouteNotFoundException.class)
@@ -95,12 +88,12 @@ public class SubrouteManagementServicesTests {
 	
 	@Test()
 	public void testListAll() throws AmbiguousCritereaException, DuplicatedSubrouteException, InvalidPointNameException {
-		int previousTotal = services.listAll().size();
+		int previousTotal = services.listAll(null).size();
 
-		Subroute theNewSubroute = services.create(from.getName(), to.getName(), 13.4);
+		Subroute theNewSubroute = services.create("map", from, to, 13.4);
 		assertThat("the subroute should not be null", theNewSubroute, notNullValue());
 		
-		assertThat("the subroute should be gone", previousTotal + 1, equalTo(services.listAll().size()));
+		assertThat("the subroute should be gone", previousTotal + 1, equalTo(services.listAll(null).size()));
 
 	}
 }

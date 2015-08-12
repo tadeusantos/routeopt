@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.tadeusantos.routeopt.rest.config.SpringMvcConfiguration;
-import org.tadeusantos.routeopt.services.contract.IPointManagementServices;
 import org.tadeusantos.routeopt.services.contract.ISubrouteManagementServices;
 import org.tadeusantos.routeopt.services.contract.IUnitTestsHelperServices;
 import org.tadeusantos.routeopt.services.exceptions.AmbiguousCritereaException;
@@ -34,8 +33,6 @@ public class RouteOptimizationControllerTests {
 	@Autowired
 	private IUnitTestsHelperServices helperServices;
 	@Autowired
-	private IPointManagementServices pointServices;
-	@Autowired
 	private ISubrouteManagementServices subrouteServices;
 
 	@Autowired
@@ -51,22 +48,14 @@ public class RouteOptimizationControllerTests {
 	@Before
 	public void reset() throws DuplicatedPointException, InvalidPointNameException, AmbiguousCritereaException,
 			DuplicatedSubrouteException {
-		helperServices.deleteAllPoints();
 		helperServices.deleteAllSubroutes();
 
-		pointServices.create("A");
-		pointServices.create("B");
-		pointServices.create("C");
-		pointServices.create("D");
-		pointServices.create("E");
-		pointServices.create("F");
-
-		subrouteServices.create("A", "B", 10);
-		subrouteServices.create("B", "D", 15);
-		subrouteServices.create("A", "C", 20);
-		subrouteServices.create("C", "D", 30);
-		subrouteServices.create("B", "E", 50);
-		subrouteServices.create("D", "E", 30);
+		subrouteServices.create("map", "A", "B", 10);
+		subrouteServices.create("map", "B", "D", 15);
+		subrouteServices.create("map", "A", "C", 20);
+		subrouteServices.create("map", "C", "D", 30);
+		subrouteServices.create("map", "B", "E", 50);
+		subrouteServices.create("map", "D", "E", 30);
 	}
 
 	@Test

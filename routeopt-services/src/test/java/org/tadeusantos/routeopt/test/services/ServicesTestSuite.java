@@ -5,8 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ PointManagementServicesTests.class, RouteOptimizationServicesTests.class,
-		SubrouteManagementServicesTests.class })
+@SuiteClasses({ RouteOptimizationServicesTests.class, SubrouteManagementServicesTests.class })
 public class ServicesTestSuite {
 
 }

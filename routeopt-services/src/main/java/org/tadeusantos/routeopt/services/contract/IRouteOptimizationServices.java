@@ -12,5 +12,5 @@ import org.tadeusantos.routeopt.services.exceptions.AmbiguousCritereaException;
  *
  */
 public interface IRouteOptimizationServices {
-	OptimizedRoute optimize(String fromName, String toName, double truckAutonomy, double gasPrice) throws AmbiguousCritereaException;
+	OptimizedRoute optimize(String mapName, String fromName, String toName, double truckAutonomy, double gasPrice) throws AmbiguousCritereaException;
 }

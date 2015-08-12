@@ -16,8 +16,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.tadeusantos.routeopt.domain.Point;
-import org.tadeusantos.routeopt.repositories.PointRepository;
+import org.tadeusantos.routeopt.domain.Subroute;
+import org.tadeusantos.routeopt.repositories.SubrouteRepository;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
@@ -32,8 +32,8 @@ import com.mongodb.WriteConcern;
  *
  */
 @Configuration
-@EnableMongoRepositories(basePackageClasses = PointRepository.class)
-@ComponentScan(basePackageClasses = Point.class)
+@EnableMongoRepositories(basePackageClasses = SubrouteRepository.class)
+@ComponentScan(basePackageClasses = Subroute.class)
 @PropertySource("classpath:mongodb.properties")
 public class RepositoriesConfiguration extends AbstractMongoConfiguration {
 	private static final Logger logger = 

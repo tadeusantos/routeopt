@@ -33,16 +33,16 @@ public class RouteOptimizationController {
 	public RouteOptimizationController() {
 	}
 	
-	@RequestMapping(value="/{from}/{to}/{autonomy:.*}/{price:.*}", produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/{map}/{from}/{to}/{autonomy:.*}/{price:.*}", produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Response optimize(@PathVariable("from") String from, @PathVariable("to") String to, 
-								   @PathVariable("autonomy") double truckAutonomy, 
-								   @PathVariable("price") double gasPrice) {
+	public Response optimize(@PathVariable("map") String map, @PathVariable("from") String from, 
+							 @PathVariable("to") String to, @PathVariable("autonomy") double truckAutonomy, 
+							 @PathVariable("price") double gasPrice) {
 		
 		try {
 			return new Response(ResponseStatus.OK, 
 								null, 
-								services.optimize(from, to, truckAutonomy, gasPrice)
+								services.optimize(map, from, to, truckAutonomy, gasPrice)
 								);
 		} 
 		catch (AmbiguousCritereaException e) {

@@ -1,11 +1,10 @@
 package org.tadeusantos.routeopt.tests.domain;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
 
 import org.junit.Test;
-import org.tadeusantos.routeopt.domain.Point;
 import org.tadeusantos.routeopt.domain.Subroute;
 
 public class SubrouteTests {
@@ -21,51 +20,57 @@ public class SubrouteTests {
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testNewWithFromPoint() {
-		Point from = new Point("xpto");
+		String from = "xpto";
 		double distance = 0d;
 		
-		new Subroute(from, null, distance);
+		new Subroute("map1", from, null, distance);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testNewWithToPoint() {
-		Point to = new Point("xpto");
+		String to = "xpto";
 		double distance = 0d;
 		
-		new Subroute(null, to, distance);
+		new Subroute("map1", null, to, distance);
 	}
 	
 	@Test
 	public void testNewWithBothPoints() {
-		String fromName = "xptoFrom";
-		String toName = "xptoTo";
-		String routeName = String.format("%s -> %s", fromName, toName);
+		String from = "xptoFrom";
+		String to = "xptoTo";
+		String routeName = String.format("%s -> %s", from, to);
 		
-		Point from = new Point(fromName);
-		Point to = new Point(toName);
 		double distance = 10.4d;
 		
-		Subroute theNewSubroute = new Subroute(from, to, distance);
+		Subroute theNewSubroute = new Subroute("map", from, to, distance);
 		assertThat("subrout id should be null", theNewSubroute.getId(), nullValue());
 		assertThat(String.format("subroute name should be %s", routeName),
 					theNewSubroute.getName(), equalTo(routeName));
-		assertThat(String.format("subroute from should be %s", fromName), 
-					theNewSubroute.getFrom().getName(), equalTo(fromName));
-		assertThat(String.format("subroute to should be %s", toName), 
-				theNewSubroute.getTo().getName(), equalTo(toName));
+		assertThat(String.format("subroute from should be %s", from), 
+					theNewSubroute.getFrom(), equalTo(from));
+		assertThat(String.format("subroute to should be %s", to), 
+				theNewSubroute.getTo(), equalTo(to));
 		assertThat(String.format("subroute distance should be %s", distance), 
 				theNewSubroute.getDistance(), equalTo(distance));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testNewWithNegativeDistance() {
-		String fromName = "xptoFrom";
-		String toName = "xptoTo";
+		String from = "xptoFrom";
+		String to = "xptoTo";
 
-		Point from = new Point(fromName);
-		Point to = new Point(toName);
 		double distance = -1;
 		
-		new Subroute(from, to, distance);
+		new Subroute("map", from, to, distance);
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testNewWithoutMap() {
+		String from = "xptoFrom";
+		String to = "xptoTo";
+
+		double distance = 1;
+		
+		new Subroute(null, from, to, distance);
 	}
 }

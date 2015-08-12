@@ -10,9 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.tadeusantos.routeopt.domain.Point;
 import org.tadeusantos.routeopt.domain.Subroute;
-import org.tadeusantos.routeopt.repositories.PointRepository;
 import org.tadeusantos.routeopt.repositories.SubrouteRepository;
 import org.tadeusantos.routeopt.repositories.config.RepositoriesConfiguration;
 import org.tadeusantos.routeopt.services.config.ServicesConfiguration;
@@ -26,22 +24,19 @@ import org.tadeusantos.routeopt.services.exceptions.AmbiguousCritereaException;
 public class RouteOptimizationServicesTests {
 
 	@Autowired
-	private PointRepository pointRepository;
-	@Autowired
 	private SubrouteRepository subrouteRepository;
 
 	@Autowired
 	private IRouteOptimizationServices services;
 	
-	private Point a;
-	private Point b;
-	private Point c;
-	private Point d;
-	private Point e;
+	private String a;
+	private String b;
+	private String c;
+	private String d;
+	private String e;
 
 	@Before
 	public void reset() {
-		pointRepository.deleteAll();
 		subrouteRepository.deleteAll();
 
 		createPoints();
@@ -50,36 +45,31 @@ public class RouteOptimizationServicesTests {
 	
 	@Test
 	public void testOptimize() throws AmbiguousCritereaException {
-		OptimizedRoute route = services.optimize(a.getName(), d.getName(), 10, 2.5);
+		OptimizedRoute route = services.optimize("map", a, d, 10, 2.5);
 		
 		assertThat("the optimized route should not be null", route, notNullValue());
-		assertThat("the optimized route should start at A", route.getFrom().getName(), equalTo(a.getName()));
-		assertThat("the optimized route should end at D", route.getTo().getName(), equalTo(d.getName()));
+		assertThat("the optimized route should start at A", route.getFrom(), equalTo(a));
+		assertThat("the optimized route should end at D", route.getTo(), equalTo(d));
 		assertThat("the optimized route cost should be 6.5", route.getEstimatedCost(), equalTo(6.25));
 		assertThat("the optimized route distance should be 25.0", route.getEstimatedDistance(), equalTo(25d));
 		assertThat("the optimized route distance should be A B D", route.getRoute(), equalTo("A B D"));
 	}
 
 	private void createSubroutes() {
-		subrouteRepository.save(new Subroute(a, b, 10));
-		subrouteRepository.save(new Subroute(b, d, 15));
-		subrouteRepository.save(new Subroute(a, c, 20));
-		subrouteRepository.save(new Subroute(c, d, 30));
-		subrouteRepository.save(new Subroute(b, e, 50));
-		subrouteRepository.save(new Subroute(d, e, 30));
+		subrouteRepository.save(new Subroute("map", a, b, 10));
+		subrouteRepository.save(new Subroute("map", b, d, 15));
+		subrouteRepository.save(new Subroute("map", a, c, 20));
+		subrouteRepository.save(new Subroute("map", c, d, 30));
+		subrouteRepository.save(new Subroute("map", b, e, 50));
+		subrouteRepository.save(new Subroute("map", d, e, 30));
 	}
 
 	private void createPoints() {
-		a = new Point("A");
-		pointRepository.save(a);
-		b = new Point("B");
-		pointRepository.save(b);
-		c = new Point("C");
-		pointRepository.save(c);
-		d = new Point("D");
-		pointRepository.save(d);
-		e = new Point("E");
-		pointRepository.save(e);
+		a = "A";
+		b = "B";
+		c = "C";
+		d = "D";
+		e = "E";
 	}
 
 }

@@ -13,9 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.tadeusantos.routeopt.domain.Point;
 import org.tadeusantos.routeopt.domain.Subroute;
-import org.tadeusantos.routeopt.repositories.PointRepository;
 import org.tadeusantos.routeopt.repositories.SubrouteRepository;
 import org.tadeusantos.routeopt.repositories.config.RepositoriesConfiguration;
 
@@ -25,38 +23,36 @@ public class SubrouteRepositoryTests {
 
 	@Autowired
 	private SubrouteRepository repository;
-	@Autowired
-	private PointRepository pointRepository;
 	
-	private Point from;
-	private Point to;
+	private String from;
+	private String to;
 	
 	@Before
     public void reset() {
 		repository.deleteAll();
 		
-		from = pointRepository.save(new Point("fromP"));
-		to = pointRepository.save(new Point("fromT"));
+		from = "fromP";
+		to = "fromT";
     }
     
 	@Test
 	public void testFindByFromAndToMatch() {
-		Subroute theNewSubroute = repository.save(new Subroute(from, to, 10));
+		Subroute theNewSubroute = repository.save(new Subroute("map", from, to, 10));
 
 		assertThat("the subroute id should not be null", theNewSubroute.getId(), notNullValue());
 
-		List<Subroute> retrievedSubroutes = repository.findByFromAndTo(from, to);
+		List<Subroute> retrievedSubroutes = repository.findByMapAndFromAndTo("map", from, to);
 		assertThat("the subroute list should not be null", retrievedSubroutes, notNullValue());
 		assertThat("the subroute list should not be empty", retrievedSubroutes, not(empty()));
 	}
 	
 	@Test
 	public void testFindByFromNameMiss() {
-		Subroute theNewSubroute = repository.save(new Subroute(from, to, 10));
+		Subroute theNewSubroute = repository.save(new Subroute("map", from, to, 10));
 
 		assertThat("the subroute id should not be null", theNewSubroute.getId(), notNullValue());
 
-		List<Subroute> retrievedSubroutes = repository.findByFromAndTo(to, from);
+		List<Subroute> retrievedSubroutes = repository.findByMapAndFromAndTo("map", to, from);
 		assertThat("the subroute list should not be null", retrievedSubroutes, notNullValue());
 		assertThat("the subroute list should be empty", retrievedSubroutes, empty());
 	}

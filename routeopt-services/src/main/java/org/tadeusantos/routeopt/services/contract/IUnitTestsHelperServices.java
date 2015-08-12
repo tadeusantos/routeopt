@@ -9,6 +9,5 @@ package org.tadeusantos.routeopt.services.contract;
  *
  */
 public interface IUnitTestsHelperServices {
-	void deleteAllPoints();
 	void deleteAllSubroutes();
 }

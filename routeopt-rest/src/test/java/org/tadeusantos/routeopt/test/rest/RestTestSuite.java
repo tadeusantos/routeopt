@@ -5,8 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ PointManagementControllerTests.class, RouteOptimizationControllerTests.class,
-		SubrouteManagementControllerTests.class })
+@SuiteClasses({ RouteOptimizationControllerTests.class, MapControllerTests.class })
 public class RestTestSuite {
 
 }

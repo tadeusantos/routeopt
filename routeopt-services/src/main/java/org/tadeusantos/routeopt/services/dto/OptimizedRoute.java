@@ -1,8 +1,5 @@
 package org.tadeusantos.routeopt.services.dto;
 
-import org.tadeusantos.routeopt.domain.Point;
-
-
 /**
  * Optimized route information that will be returned to the rest module.
  * 
@@ -13,8 +10,8 @@ import org.tadeusantos.routeopt.domain.Point;
  *
  */
 public class OptimizedRoute {
-	private Point from;
-	private Point to;
+	private String from;
+	private String to;
 	private String route;
 	private double estimatedCost;
 	private double estimatedDistance;
@@ -23,16 +20,16 @@ public class OptimizedRoute {
 		
 	}
 	
-	public Point getFrom() {
+	public String getFrom() {
 		return from;
 	}
-	public void setFrom(Point from) {
+	public void setFrom(String from) {
 		this.from = from;
 	}
-	public Point getTo() {
+	public String getTo() {
 		return to;
 	}
-	public void setTo(Point to) {
+	public void setTo(String to) {
 		this.to = to;
 	}
 	public String getRoute() {

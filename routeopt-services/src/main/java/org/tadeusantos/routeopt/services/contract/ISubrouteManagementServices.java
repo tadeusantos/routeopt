@@ -16,8 +16,8 @@ import org.tadeusantos.routeopt.services.exceptions.SubrouteNotFoundException;
  *
  */
 public interface ISubrouteManagementServices {
-	Subroute create(String pointFromName, String pointToName, double distance) throws AmbiguousCritereaException, 
+	Subroute create(String map, String pointFromName, String pointToName, double distance) throws AmbiguousCritereaException, 
 		DuplicatedSubrouteException, InvalidPointNameException;
-	List<Subroute> listAll();
+	List<Subroute> listAll(String map);
 	void delete(String id) throws AmbiguousCritereaException, SubrouteNotFoundException;
 }

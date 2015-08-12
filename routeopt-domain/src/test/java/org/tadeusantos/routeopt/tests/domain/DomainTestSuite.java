@@ -4,7 +4,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({PointTests.class, SubrouteTests.class})
+@SuiteClasses({SubrouteTests.class})
 public class DomainTestSuite {
 
 }

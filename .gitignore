@@ -32,3 +32,4 @@
 /routeopt-services/target/routeopt-services-0.0.1-SNAPSHOT.jar
 /routeopt-services/target/classes
 /routeopt-services/target/generated-sources
+/routeopt/target/test-classes

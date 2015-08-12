@@ -2,7 +2,7 @@ package org.tadeusantos.routeopt.services.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.tadeusantos.routeopt.services.impl.PointManagementServices;
+import org.tadeusantos.routeopt.services.impl.SubrouteManagementServices;
 
 /**
  * Spring configuration setting for Services module.
@@ -13,6 +13,6 @@ import org.tadeusantos.routeopt.services.impl.PointManagementServices;
  *
  */
 @Configuration
-@ComponentScan(basePackageClasses = PointManagementServices.class)
+@ComponentScan(basePackageClasses = SubrouteManagementServices.class)
 public class ServicesConfiguration {
 }

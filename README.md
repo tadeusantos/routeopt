@@ -27,9 +27,11 @@ The application was conceived with the following tiers:
 **Integration tier**
 The integration tier is based on SpringMVC and its main component is: 
 	- Controller: Responsible for handling the web services requests and routing them to the right business services.
+
 **Application tier**
 The application tier is based on Spring IoC container and its main component are:
 	- Service: These are where we implement the business logics.
+
 **Data tier**
 The data tier is based on Spring Data and its main component is:
 	- Repository: This component is responsible for integrating with MongoDB allowing data retrieval and persistence.

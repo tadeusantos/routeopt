@@ -12,11 +12,9 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.tadeusantos.routeopt.domain.Point;
 import org.tadeusantos.routeopt.domain.Subroute;
 import org.tadeusantos.routeopt.repositories.SubrouteRepository;
 import org.tadeusantos.routeopt.services.contract.IRouteOptimizationServices;
-import org.tadeusantos.routeopt.services.contract.IPointManagementServices;
 import org.tadeusantos.routeopt.services.dto.OptimizedRoute;
 import org.tadeusantos.routeopt.services.dto.RouteLeg;
 import org.tadeusantos.routeopt.services.dto.RouteMap;
@@ -48,23 +46,17 @@ public class RouteOptimizationServices implements IRouteOptimizationServices {
 	private Map<RoutePoint, RoutePoint> predecessors = new HashMap<>();
 
 	@Autowired
-	private IPointManagementServices pointManagementServices;
-	
-	@Autowired
 	private SubrouteRepository repository;
 
 	public RouteOptimizationServices() {
 	}
 
 	@Override
-	public OptimizedRoute optimize(String fromName, String toName, double truckAutonomy, double gasPrice) throws AmbiguousCritereaException {
+	public OptimizedRoute optimize(String mapName, String from, String to, double truckAutonomy, double gasPrice) throws AmbiguousCritereaException {
 		
-		Point from = pointManagementServices.get(fromName);
-		Point to = pointManagementServices.get(toName);
-		
-		RoutePoint fromPoint = new RoutePoint(from.getName());
-		RoutePoint toPoint = new RoutePoint(to.getName());
-		map = loadRouteMap();
+		RoutePoint fromPoint = new RoutePoint(from);
+		RoutePoint toPoint = new RoutePoint(to);
+		map = loadRouteMap(mapName);
 
 		distancies.put(fromPoint, 0d);
 
@@ -82,7 +74,7 @@ public class RouteOptimizationServices implements IRouteOptimizationServices {
 		return route;
 	}
 
-	private OptimizedRoute loadOptimizedRoute(double truckAutonomy, double gasPrice, Point from, Point to,
+	private OptimizedRoute loadOptimizedRoute(double truckAutonomy, double gasPrice, String from, String to,
 			RoutePoint toPoint) {
 		LinkedList<RoutePoint> optimizedPath = getPath(toPoint);
 		
@@ -103,12 +95,16 @@ public class RouteOptimizationServices implements IRouteOptimizationServices {
 		return route;
 	}
 
-	private RouteMap loadRouteMap() {
+	private RouteMap loadRouteMap(String mapName) {
 		RouteMap map = new RouteMap();
-
-		List<Subroute> subroutes = repository.findAll();
+		
+		if (StringUtils.isEmpty(mapName)) {
+			throw new IllegalArgumentException("exception.optimize.required.map");
+		}
+		
+		List<Subroute> subroutes = repository.findByMap(mapName);
 		for (Subroute subroute : subroutes) {
-			RoutePoint routeFrom = new RoutePoint(subroute.getFrom().getName());
+			RoutePoint routeFrom = new RoutePoint(subroute.getFrom());
 
 			if (!map.getPoints().contains(routeFrom)) {
 				map.getPoints().add(routeFrom);
@@ -122,8 +118,8 @@ public class RouteOptimizationServices implements IRouteOptimizationServices {
 	}
 
 	private RouteLeg createLeg(Subroute subroute) {
-		return new RouteLeg(subroute.getName(), new RoutePoint(subroute.getFrom().getName()),
-				new RoutePoint(subroute.getTo().getName()), subroute.getDistance());
+		return new RouteLeg(subroute.getName(), new RoutePoint(subroute.getFrom()),
+				new RoutePoint(subroute.getTo()), subroute.getDistance());
 	}
 
 	private RoutePoint getMinimum(Set<RoutePoint> points) {

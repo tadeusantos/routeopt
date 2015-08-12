@@ -3,7 +3,6 @@ package org.tadeusantos.routeopt.repositories;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.tadeusantos.routeopt.domain.Point;
 import org.tadeusantos.routeopt.domain.Subroute;
 
 /**
@@ -15,5 +14,6 @@ import org.tadeusantos.routeopt.domain.Subroute;
  *
  */
 public interface SubrouteRepository extends MongoRepository<Subroute, String> {
-	List<Subroute> findByFromAndTo(Point from, Point to);
+	List<Subroute> findByMapAndFromAndTo(String map, String from, String to);
+	List<Subroute> findByMap(String mapName);
 }
