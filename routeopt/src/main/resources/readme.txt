@@ -1,0 +1,1 @@
+This POM project should not have any code. Use the modules instead.
