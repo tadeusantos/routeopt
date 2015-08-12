@@ -63,42 +63,39 @@ Web Services
 	
 	- http://localhost:8080/routeopt-rest/optimize - Route optimizer
 	- Operation:
-		GET /{from}/{to}/{truckAutonomy}/{gasPrice} 
+		GET /{map}/{from}/{to}/{truckAutonomy}/{gasPrice} 
 		Returns the optimizes route starting at "from" point and ending at "to" point. It will consider the truck fuel autonomy (kilometres/litre) and the gas price.
-		Example: GET http://localhost:8080/routeopt-rest/optimize/A/D/10/2.5
+		Example: GET http://localhost:8080/routeopt-rest/optimize/XPTO/A/D/10/2.5
 
-	- http://localhost:8080/routeopt-rest/points - Point management. A point is an important location that is part of WM Company supply chain.
-	- Operations:
-		GET / 
-		Returns all the points been managed by the application.
-		Example: GET http://localhost:8080/routeopt-rest/points
-			
-		GET /{name}
-		Returns the point given its name.
-		Example: GET http://localhost:8080/routeopt-rest/points/A
-
-		POST /{name}
-		Creates a point given its name.
-		Example: POST http://localhost:8080/routeopt-rest/points/B
-
-		DELETE /{name}
-		Deletes a point given its name.
-		Example: DELETE http://localhost:8080/routeopt-rest/points/B
-
-	- http://localhost:8080/routeopt-rest/subroute - Subroute management. A subroute is the information regarding a possible leg that between 2 places.
+	- /localhost:8080/routeopt-rest/map	- Map management. A map is the information all the possible legs that between 2 places in a supply chain.
 	- Operations:
 		GET / 
 		Returns all the subroutes been managed by the application.
-		Example: GET http://localhost:8080/routeopt-rest/subroute
+		Example: GET http://localhost:8080/routeopt-rest/map
 			
-		POST /{from}/{to}/{distance}
-		Creates a point given: The start point, the end point and the distance between them (kilometres).
-		Example: POST http://localhost:8080/routeopt-rest/subroute/A/B/10
+		GET /{mapName} 
+		Returns all the subroutes given a map name.
+		Example: GET http://localhost:8080/routeopt-rest/map/XPTO
+		
+		POST / * JSON request
+		Creates map entries based on the JSON format: {"name": "....", "routes": "FROM TO DISTANCE"}
+		Example: POST http://localhost:8080/routeopt-rest/map
+				 {"name":"Test","routes":"A B 10\nB D 15\nA C 20\n\nC D 30\nB E 50\nD E 30"}
 
 		DELETE /{id}
 		Deletes a subroute given its id.
-		Example: DELETE http://localhost:8080/routeopt-rest/subroute/mySubrouteId
+		Example: DELETE http://localhost:8080/routeopt-rest/map/mySubrouteId
 
 	NOTE: You can find JUnit test cases that with a REST client at /routeopt-rest/src/test/java. They can help you have fun with the API faster.
 		  You can also use "Advanced REST client" Chrome plugin to test the Web Services.
-	
+
+TO DO
+-----
+Several architectural services could be added to the application if it was supposed to evolve. Including:
+- Security
+- Audit Trail
+- Improved Error Handling
+- Integration Log + Message Reprocessing
+- Asynchronous Integration Support
+- Integrating Quota and Monetization
+- Continuous Delivery

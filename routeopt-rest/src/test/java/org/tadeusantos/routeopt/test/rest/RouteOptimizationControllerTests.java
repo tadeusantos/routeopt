@@ -60,7 +60,7 @@ public class RouteOptimizationControllerTests {
 
 	@Test
 	public void testOptimize() throws Exception {
-		mockMvc.perform(get("/optimize/A/D/10/2.5"))
+		mockMvc.perform(get("/optimize/map/A/D/10/2.5"))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType("application/json"))
 				.andExpect(jsonPath("$.['status']").value("OK"))
